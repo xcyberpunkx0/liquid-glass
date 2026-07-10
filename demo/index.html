@@ -3,157 +3,216 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>liquid-glass demo</title>
+    <title>Liquid Glass</title>
     <style>
       * { box-sizing: border-box; margin: 0; }
-
-      body {
-        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-        color: #f2f3f7;
-        -webkit-font-smoothing: antialiased;
-        /* User-supplied Fuji/sakura photo, injected as --bg-image by
-           main.tsx via Vite import. Fixed, so the glass slides over it on
-           scroll — when the rim refraction pops. */
-        background:
-          linear-gradient(rgba(12, 12, 20, 0.32), rgba(12, 12, 20, 0.22)),
-          var(--bg-image, none) center / cover no-repeat fixed,
-          repeating-linear-gradient(45deg, #101018 0 40px, #181826 40px 80px);
+      :root {
+        --ink: #f5f5f7;
+        --ink-2: rgba(245, 245, 247, .72);
+        --ink-3: rgba(245, 245, 247, .5);
+        --radius-xl: 28px;
       }
 
-      main { max-width: 1060px; margin: 0 auto; padding: 0 1.5rem; }
+      html { scroll-behavior: smooth; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+        color: var(--ink);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        /* User-supplied Fuji/sakura photo, injected as --bg-image by
+           main.tsx. Fixed, so the glass slides over it on scroll. */
+        background:
+          linear-gradient(rgba(10, 10, 16, 0.38), rgba(10, 10, 16, 0.3)),
+          var(--bg-image, none) center / cover no-repeat fixed,
+          #0a0a10;
+      }
 
-      /* ── Hero ─────────────────────────────────────────────────────── */
+      /* ── Nav (glass) ─────────────────────────────────────────────── */
+      .nav {
+        position: fixed; inset: 0 0 auto 0; z-index: 40;
+        border-bottom: 1px solid rgba(255, 255, 255, .12);
+        background: linear-gradient(rgba(13, 16, 24, .4), rgba(13, 16, 24, .3));
+      }
+      .nav-inner {
+        max-width: 1024px; margin: 0 auto; height: 3.1rem;
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 1.25rem;
+      }
+      .nav .brand {
+        font-size: .92rem; font-weight: 650; letter-spacing: -.01em;
+        color: var(--ink); text-decoration: none;
+        display: inline-flex; align-items: center; gap: .5rem;
+      }
+      .nav .brand::before { content: "◐"; font-size: 1rem; }
+      .nav-links { display: flex; gap: 1.4rem; align-items: center; }
+      .nav-links a {
+        font-size: .78rem; color: var(--ink-2); text-decoration: none;
+        transition: color .2s;
+      }
+      .nav-links a:hover { color: var(--ink); }
+
+      main { max-width: 1024px; margin: 0 auto; padding: 0 1.25rem; }
+
+      /* ── Hero ────────────────────────────────────────────────────── */
       .hero {
-        min-height: 82vh;
-        display: grid;
-        place-content: center;
-        justify-items: center;
-        text-align: center;
-        gap: 1.1rem;
-        padding: 4rem 0 2rem;
+        min-height: 100svh;
+        display: grid; place-content: center; justify-items: center;
+        text-align: center; gap: 1.4rem; padding: 5rem 0 3rem;
       }
       .eyebrow {
-        font-family: ui-monospace, monospace;
-        font-size: .72rem;
-        letter-spacing: .08em;
-        color: rgba(242, 243, 247, .75);
-        border: 1px solid rgba(255, 255, 255, .22);
-        background: rgba(13, 16, 24, .35);
-        border-radius: 999px;
-        padding: .35rem .9rem;
+        font-size: .8rem; font-weight: 600; letter-spacing: .02em;
+        color: #ffb7d5;
       }
       .hero h1 {
-        font-size: clamp(2.3rem, 6vw, 3.6rem);
-        font-weight: 750;
-        letter-spacing: -.02em;
-        line-height: 1.05;
-        text-shadow: 0 2px 24px rgba(0, 0, 0, .35);
+        font-size: clamp(3rem, 8vw, 5.5rem);
+        font-weight: 750; letter-spacing: -.035em; line-height: .98;
+        text-shadow: 0 4px 40px rgba(0, 0, 0, .45);
       }
+      .hero h1 .soft { color: var(--ink-2); }
       .hero .lede {
-        max-width: 34rem;
-        font-size: 1.02rem;
-        line-height: 1.55;
-        color: rgba(242, 243, 247, .82);
-        text-shadow: 0 1px 12px rgba(0, 0, 0, .4);
+        max-width: 30rem; font-size: 1.12rem; line-height: 1.5;
+        font-weight: 450; color: var(--ink-2);
+        text-shadow: 0 1px 16px rgba(0, 0, 0, .5);
       }
-      .hero .lede strong { color: #fff; }
-      .hero-actions { display: flex; gap: .8rem; margin-top: .4rem; flex-wrap: wrap; justify-content: center; }
+      .hero-actions { display: flex; gap: .75rem; margin-top: .6rem; flex-wrap: wrap; justify-content: center; }
       .btn {
-        display: inline-flex; align-items: center; gap: .5rem;
-        font-size: .85rem; font-weight: 600; text-decoration: none;
-        color: #f2f3f7; padding: .6rem 1.15rem; border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, .3);
-        background: rgba(13, 16, 24, .38);
-        transition: background .2s, transform .2s;
+        display: inline-flex; align-items: center; gap: .45rem;
+        font-size: .92rem; font-weight: 600; text-decoration: none;
+        padding: .72rem 1.5rem; border-radius: 999px; line-height: 1;
+        transition: transform .2s, background .2s, opacity .2s;
       }
-      .btn:hover { background: rgba(13, 16, 24, .6); transform: translateY(-1px); }
-      .scroll-cue { font-size: .75rem; color: rgba(242,243,247,.6); margin-top: 1.6rem; }
+      .btn:hover { transform: translateY(-1px); }
+      .btn-primary { background: var(--ink); color: #111; }
+      .btn-primary:hover { opacity: .92; }
+      .btn-ghost {
+        color: var(--ink); border: 1px solid rgba(255, 255, 255, .35);
+        background: rgba(13, 16, 24, .3);
+      }
+      .btn-ghost:hover { background: rgba(13, 16, 24, .55); }
+      .scroll-cue {
+        margin-top: 2.2rem; font-size: 1.3rem; color: var(--ink-3);
+        animation: cue 2.4s ease-in-out infinite;
+      }
+      @keyframes cue { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+      @media (prefers-reduced-motion: reduce) { .scroll-cue { animation: none; } }
 
-      /* ── Sections ─────────────────────────────────────────────────── */
-      .section-title {
-        text-align: center;
-        font-size: .72rem;
-        font-weight: 700;
-        letter-spacing: .16em;
-        text-transform: uppercase;
-        color: rgba(242, 243, 247, .65);
-        margin-bottom: 1.6rem;
+      /* ── Section headers ─────────────────────────────────────────── */
+      section { padding: 5.5rem 0; }
+      .sec-head { text-align: center; margin-bottom: 2.6rem; }
+      .sec-head .kicker {
+        font-size: .8rem; font-weight: 650; color: #9ecbff;
+        letter-spacing: .02em; margin-bottom: .6rem;
+      }
+      .sec-head h2 {
+        font-size: clamp(1.9rem, 4.5vw, 3rem);
+        font-weight: 720; letter-spacing: -.03em; line-height: 1.05;
+      }
+      .sec-head p {
+        max-width: 30rem; margin: .9rem auto 0; font-size: .98rem;
+        line-height: 1.55; color: var(--ink-2);
       }
 
-      /* ── Material showcase grid ───────────────────────────────────── */
-      .showcase { padding: 1rem 0 4.5rem; }
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1.4rem;
-        align-items: stretch;
+      /* ── Bento grid ──────────────────────────────────────────────── */
+      .bento {
+        display: grid; gap: 1rem;
+        grid-template-columns: repeat(6, 1fr);
       }
-      #react-root { display: contents; }
-      .glass {
-        border-radius: 22px;
-        padding: 1.5rem 1.6rem;
-        border: 1px solid rgba(255, 255, 255, .3);
-        background: linear-gradient(rgba(255, 255, 255, .1), rgba(255, 255, 255, .04));
+      .tile {
+        border-radius: var(--radius-xl);
+        padding: 1.8rem;
+        border: 1px solid rgba(255, 255, 255, .26);
+        background: linear-gradient(rgba(255, 255, 255, .09), rgba(255, 255, 255, .03));
         box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, .18),
-          0 16px 48px rgba(0, 0, 0, .35);
+          inset 0 1px 0 rgba(255, 255, 255, .16),
+          0 20px 60px rgba(0, 0, 0, .35);
+        display: flex; flex-direction: column; gap: .6rem; justify-content: center;
+        min-height: 180px;
       }
-      .glass h3 { font-size: .95rem; margin-bottom: .5rem; }
-      .glass p { font-size: .85rem; line-height: 1.55; color: rgba(242, 243, 247, .85); }
-      .pill-cell { display: grid; place-items: center; }
+      .tile .cap {
+        font-size: .72rem; font-weight: 650; letter-spacing: .1em;
+        text-transform: uppercase; color: var(--ink-3);
+      }
+      .tile h3 { font-size: 1.25rem; font-weight: 680; letter-spacing: -.02em; }
+      .tile p { font-size: .88rem; line-height: 1.55; color: var(--ink-2); }
+      .tile code {
+        font-family: ui-monospace, "SF Mono", monospace; font-size: .78rem;
+        color: #ffd9e8;
+      }
+      .span-4 { grid-column: span 4; }
+      .span-2 { grid-column: span 2; }
+      #react-root { display: contents; }
+      .pill-tile { align-items: center; text-align: center; }
       .pill {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        line-height: 1;
-        border-radius: 9999px;
-        padding: 1.05rem 2.1rem;
-        font-weight: 650;
-        font-size: .95rem;
-        white-space: nowrap;
+        display: inline-flex; align-items: center; justify-content: center;
+        line-height: 1; white-space: nowrap;
+        border-radius: 9999px; padding: 1.05rem 2.1rem;
+        font-weight: 650; font-size: .95rem;
+        border: 1px solid rgba(255, 255, 255, .3);
+        background: linear-gradient(rgba(255, 255, 255, .12), rgba(255, 255, 255, .05));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 14px 40px rgba(0,0,0,.35);
       }
+      .chips { display: flex; gap: .5rem; flex-wrap: wrap; }
+      .chip {
+        font-family: ui-monospace, monospace; font-size: .72rem; font-weight: 600;
+        padding: .32rem .8rem; border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, .25); color: var(--ink-2);
+      }
+      .chip.hot { color: #a5e8d0; border-color: rgba(88, 218, 166, .45); }
+      .stats { display: flex; gap: 1.6rem; }
+      .stat b { display: block; font-size: 1.5rem; font-weight: 720; letter-spacing: -.02em; }
+      .stat span { font-size: .72rem; color: var(--ink-3); }
+
+      /* ── Refraction in motion ────────────────────────────────────── */
+      .stack { display: grid; gap: 1.4rem; }
+      .stack img {
+        width: 100%; display: block;
+        border-radius: var(--radius-xl);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, .5);
+      }
+      .sticky-pill-wrap {
+        position: sticky; top: 46vh; z-index: 2;
+        display: flex; justify-content: center;
+        height: 0;
+      }
+
+      /* ── Statement ───────────────────────────────────────────────── */
+      .statement { text-align: center; padding: 7rem 0; }
+      .statement h2 {
+        font-size: clamp(2.4rem, 6.5vw, 4.4rem);
+        font-weight: 750; letter-spacing: -.035em; line-height: 1.02;
+        text-shadow: 0 4px 40px rgba(0, 0, 0, .45);
+      }
+      .statement h2 .soft { color: var(--ink-2); }
+      .statement p {
+        max-width: 34rem; margin: 1.4rem auto 0; font-size: .95rem;
+        line-height: 1.6; color: var(--ink-2);
+      }
+
+      /* ── Footer ──────────────────────────────────────────────────── */
+      footer {
+        border-top: 1px solid rgba(255, 255, 255, .12);
+        background: rgba(10, 10, 16, .55);
+      }
+      .foot-inner {
+        max-width: 1024px; margin: 0 auto; padding: 1.6rem 1.25rem 2rem;
+        display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+        font-size: .72rem; color: var(--ink-3);
+      }
+      footer a { color: var(--ink-2); text-decoration: none; }
+      footer a:hover { color: var(--ink); }
+
+      /* ── Draggable pill ──────────────────────────────────────────── */
       .drag-pill {
-        position: fixed;
-        left: 2rem;
-        bottom: 2.5rem;
-        z-index: 20;
-        cursor: grab;
-        touch-action: none;
-        user-select: none;
-        -webkit-user-select: none;
+        position: fixed; left: 2rem; bottom: 2.5rem; z-index: 30;
+        cursor: grab; touch-action: none;
+        user-select: none; -webkit-user-select: none;
       }
       .drag-pill:active { cursor: grabbing; }
 
-      /* ── Scroll refraction demo ───────────────────────────────────── */
-      .scroll-demo { padding: 1rem 0 5rem; }
-      .scroll-demo .intro {
-        text-align: center; max-width: 32rem; margin: 0 auto 2.4rem;
-        font-size: .92rem; line-height: 1.6; color: rgba(242, 243, 247, .8);
-      }
-      .stack { display: grid; gap: 1.8rem; }
-      .stack img {
-        width: 100%; display: block; border-radius: 20px;
-        box-shadow: 0 24px 60px rgba(0, 0, 0, .45);
-      }
-      .sticky-pill-wrap {
-        position: sticky; top: 44vh; z-index: 2;
-        display: flex; justify-content: center;
-        height: 0; /* overlay the images without adding a grid row gap */
-      }
-
-      /* ── Footer ───────────────────────────────────────────────────── */
-      footer {
-        padding: 2.5rem 1.5rem 3rem;
-        text-align: center;
-        font-size: .78rem;
-        color: rgba(242, 243, 247, .6);
-      }
-      footer a { color: rgba(242, 243, 247, .85); }
-
-      /* ── Controls panel ───────────────────────────────────────────── */
+      /* ── Controls panel ──────────────────────────────────────────── */
       .controls {
-        position: fixed; right: 1.25rem; top: 1.25rem; z-index: 10;
-        width: 232px; padding: .9rem 1rem 1rem; border-radius: 16px;
+        position: fixed; right: 1.25rem; bottom: 2rem; z-index: 30;
+        width: 232px; padding: .9rem 1rem 1rem; border-radius: 18px;
         background: linear-gradient(rgba(13, 16, 24, 0.62), rgba(13, 16, 24, 0.5));
         border: 1px solid rgba(255, 255, 255, 0.14);
         box-shadow:
@@ -197,70 +256,128 @@
       }
       .controls .hint code { color: rgba(234,234,242,.65); }
 
-      @media (max-width: 720px) {
-        .controls { position: static; width: auto; margin: 1rem auto 0; max-width: 340px; }
-        .hero { min-height: 70vh; }
+      /* ── Responsive ──────────────────────────────────────────────── */
+      @media (max-width: 780px) {
+        .span-4, .span-2 { grid-column: span 6; }
+        .controls { position: static; width: auto; margin: 2rem auto 0; max-width: 340px; }
+        .drag-pill { display: none; }
+        .hero { min-height: 88svh; }
       }
     </style>
   </head>
   <body>
+    <!-- ── Glass nav ── -->
+    <nav class="nav" id="nav" aria-label="Site">
+      <div class="nav-inner">
+        <a class="brand" href="/">Liquid Glass</a>
+        <div class="nav-links">
+          <a href="?lg=high">High</a>
+          <a href="?lg=lite">Lite</a>
+          <a href="?lg=off">Off</a>
+          <a href="https://github.com/xcyberpunkx0/liquid-glass" target="_blank" rel="noreferrer">GitHub ↗</a>
+        </div>
+      </div>
+    </nav>
+
     <main>
       <!-- ── Hero ── -->
       <section class="hero">
-        <span class="eyebrow">@xcyberpunkx0/liquid-glass</span>
-        <h1>Liquid glass, for real.</h1>
+        <p class="eyebrow">@xcyberpunkx0/liquid-glass</p>
+        <h1>Glass that bends light.<br /><span class="soft">Not the truth.</span></h1>
         <p class="lede">
-          Apple-style refraction on the open web — an SVG displacement filter
-          bends whatever passes behind the surface, while the interior stays
-          crisp. Resolved tier: <strong id="tier">…</strong>.
+          Real refraction for the web. An SVG displacement field curves what
+          passes behind the surface — text stays selectable, buttons stay
+          buttons. Resolved tier: <strong id="tier">…</strong>.
         </p>
         <div class="hero-actions">
-          <a class="btn" href="https://github.com/xcyberpunkx0/liquid-glass" target="_blank" rel="noreferrer">
-            ★ GitHub
-          </a>
-          <a class="btn" href="?lg=lite">Try lite tier</a>
+          <a class="btn btn-primary" href="https://github.com/xcyberpunkx0/liquid-glass" target="_blank" rel="noreferrer">Get the code</a>
+          <a class="btn btn-ghost" href="#material">See the material</a>
         </div>
-        <p class="scroll-cue">scroll to see the rims bend ↓</p>
+        <div class="scroll-cue" aria-hidden="true">⌄</div>
       </section>
 
-      <!-- ── Material showcase ── -->
-      <section class="showcase">
-        <h2 class="section-title">The material</h2>
-        <div class="grid">
-          <div class="pill-cell">
-            <div class="glass pill" id="pill">Vanilla pill</div>
-          </div>
-          <div class="glass" id="card">
-            <h3>Vanilla card</h3>
+      <!-- ── Bento ── -->
+      <section class="showcase" id="material">
+        <div class="sec-head">
+          <p class="kicker">The material</p>
+          <h2>One surface. Every framework.</h2>
+          <p>
+            The engine is headless — it wires an SVG filter and three data
+            attributes; your CSS decides how the glass dresses.
+          </p>
+        </div>
+        <div class="bento">
+          <div class="tile span-4" id="card">
+            <p class="cap">Vanilla</p>
+            <h3>One call. Real refraction.</h3>
             <p>
-              backdrop-filter: url(#…) + blur + saturate, applied through the
-              headless element contract and the optional styles.css.
+              <code>liquidGlass(el, { scale: -112 })</code> builds a
+              displacement map from your element's own geometry and applies it
+              with <code>backdrop-filter: url(#…)</code>. Resize-aware,
+              revocable, zero dependencies.
             </p>
           </div>
+          <div class="tile span-2 pill-tile" id="pill-tile">
+            <div class="pill" id="pill">It's a real DOM node</div>
+            <p>selectable · focusable · yours</p>
+          </div>
           <div id="react-root"></div>
+          <div class="tile span-2">
+            <p class="cap">Adaptive tiers</p>
+            <div class="chips">
+              <span class="chip hot">high · 3-pass</span>
+              <span class="chip">lite · 1-pass</span>
+              <span class="chip">off · your CSS</span>
+            </div>
+            <p>
+              Desktop Chromium refracts. Capable Android gets a cheaper pass.
+              Everyone else keeps your fallback — untouched.
+            </p>
+          </div>
+          <div class="tile span-2">
+            <p class="cap">Footprint</p>
+            <div class="stats">
+              <div class="stat"><b>0</b><span>dependencies</span></div>
+              <div class="stat"><b>~4 KB</b><span>core, min+gz</span></div>
+              <div class="stat"><b>29</b><span>tests</span></div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <!-- ── Scroll refraction demo ── -->
+      <!-- ── Refraction in motion ── -->
       <section class="scroll-demo">
-        <h2 class="section-title">Refraction in motion</h2>
-        <p class="intro">
-          The pill below is sticky. As the photos scroll underneath it, watch
-          the edges of the glass bend the picture while the label stays sharp.
-        </p>
+        <div class="sec-head">
+          <p class="kicker">Refraction in motion</p>
+          <h2>Watch the rims work.</h2>
+          <p>
+            The pill is sticky. As the photos pass underneath, the edges bend
+            the picture — the label never blurs.
+          </p>
+        </div>
         <div class="stack">
           <div class="sticky-pill-wrap">
-            <div class="glass pill" id="sticky-pill">liquid glass</div>
+            <div class="pill" id="sticky-pill">liquid glass</div>
           </div>
           <img src="https://w.wallhaven.cc/full/1k/wallhaven-1kpqw9.jpg" alt="Forest shrine with torii gates" />
           <img src="https://w.wallhaven.cc/full/yq/wallhaven-yqg6r7.jpg" alt="Train passing through cherry-blossom fields" />
           <img src="https://w.wallhaven.cc/full/wq/wallhaven-wqe5rq.jpg" alt="Autumn maples from a temple veranda" />
         </div>
       </section>
+
+      <!-- ── Statement ── -->
+      <section class="statement">
+        <h2>Bends on Chromium.<br /><span class="soft">Frosts everywhere else.</span></h2>
+        <p>
+          Reduced transparency, higher contrast, reduced motion and Save-Data
+          are hard gates — accessibility preferences always win over the
+          effect. When the tier is off, the engine does nothing at all.
+        </p>
+      </section>
     </main>
 
     <!-- ── Draggable inspector pill ── -->
-    <div class="glass pill drag-pill" id="drag-pill">✥ drag me anywhere</div>
+    <div class="pill drag-pill" id="drag-pill">✥ drag me anywhere</div>
 
     <!-- ── Tuning controls ── -->
     <aside class="controls" id="controls" aria-label="Effect controls">
@@ -287,8 +404,10 @@
     </aside>
 
     <footer>
-      MIT · built by
-      <a href="https://github.com/xcyberpunkx0" target="_blank" rel="noreferrer">xcyberpunkx0</a>
+      <div class="foot-inner">
+        <span>MIT License.</span>
+        <span>Built by <a href="https://github.com/xcyberpunkx0" target="_blank" rel="noreferrer">xcyberpunkx0</a></span>
+      </div>
     </footer>
 
     <script type="module" src="./main.tsx"></script>

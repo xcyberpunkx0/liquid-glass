@@ -131,5 +131,4 @@ preference mid-session tears down or re-initializes automatically.
 
 ## License
 
-MIT — see [LICENSE](./LICENSE). The displacement-map rendering core derives
-from Deepika Rao's MIT-licensed implementation.
+MIT — see [LICENSE](./LICENSE).

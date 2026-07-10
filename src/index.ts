@@ -2,8 +2,7 @@
  * @xcyberpunkx0/liquid-glass — Apple-style liquid glass refraction.
  *
  * Headless SVG-displacement engine with adaptive quality tiers; React
- * adapter at `@xcyberpunkx0/liquid-glass/react`. Displacement-map core
- * derives from Deepika Rao's MIT-licensed liquid-glass (see LICENSE).
+ * adapter at `@xcyberpunkx0/liquid-glass/react`.
  */
 export { liquidGlass } from "./core/engine.js";
 export { isSupported } from "./core/support.js";

@@ -37,8 +37,8 @@ function init(): void {
     chroma: Number(slider("chroma").value),
     mapBlur: Number(slider("mapBlur").value),
   };
-  // The controls panel gets the effect too — dogfooding on a fixed element.
-  for (const id of ["pill", "card", "sticky-pill", "controls", "drag-pill"]) {
+  // Nav and controls get the effect too — dogfooding on fixed elements.
+  for (const id of ["nav", "pill", "card", "sticky-pill", "controls", "drag-pill"]) {
     const el = document.getElementById(id)!;
     const instance = liquidGlass(el, opts);
     if (instance.tier === "off") el.setAttribute("data-lg-quality", "off");
@@ -87,11 +87,12 @@ init();
 }
 
 createRoot(document.getElementById("react-root")!).render(
-  <LiquidGlass className="glass" quality={quality} scale={-64}>
-    <h3>React &lt;LiquidGlass&gt;</h3>
+  <LiquidGlass className="tile span-2" quality={quality} scale={-64}>
+    <p className="cap">React</p>
+    <h3>&lt;LiquidGlass&gt;</h3>
     <p>
-      Same engine through the hook: idle-deferred init, tier via
-      useSyncExternalStore, destroy on unmount.
+      Same engine through a hook — idle-deferred init, SSR-safe, destroy on
+      unmount.
     </p>
   </LiquidGlass>,
 );
