@@ -13,11 +13,11 @@
         /* Fixed photo: the glass panels slide over it on scroll, which is
            when the rim refraction is most visible. Gradient underlay shows
            while the photo loads. */
-        /* 8K anime wallpaper (wallhaven d83pkl, SFW): fixed, so the glass
-           slides over it on scroll — when the rim refraction pops. */
+        /* Kimi no Na wa twilight sky (wallhaven 8oy372, 4K, SFW): fixed, so
+           the glass slides over it on scroll — when the rim refraction pops. */
         background:
-          linear-gradient(rgba(12, 12, 20, 0.3), rgba(12, 12, 20, 0.2)),
-          url("https://w.wallhaven.cc/full/d8/wallhaven-d83pkl.jpg") center / cover
+          linear-gradient(rgba(12, 12, 20, 0.35), rgba(12, 12, 20, 0.25)),
+          url("https://w.wallhaven.cc/full/8o/wallhaven-8oy372.jpg") center / cover
             no-repeat fixed,
           repeating-linear-gradient(45deg, #101018 0 40px, #181826 40px 80px);
       }
@@ -38,9 +38,51 @@
         padding: 2rem;
         max-width: 420px;
       }
-      .controls { position: fixed; right: 1rem; top: 1rem; display: grid; gap: .5rem;
-        background: rgba(0,0,0,.6); padding: 1rem; border-radius: 12px; font-size: .8rem; }
-      .controls label { display: flex; justify-content: space-between; gap: .75rem; }
+      .controls {
+        position: fixed; right: 1.25rem; top: 1.25rem; z-index: 10;
+        width: 232px; padding: .9rem 1rem 1rem; border-radius: 16px;
+        background: linear-gradient(rgba(13, 16, 24, 0.62), rgba(13, 16, 24, 0.5));
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.12),
+          0 16px 40px rgba(0, 0, 0, 0.45);
+        font-size: .75rem; letter-spacing: .01em;
+      }
+      .controls .panel-title {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: .8rem; font-size: .68rem; font-weight: 600;
+        text-transform: uppercase; letter-spacing: .12em; color: rgba(234,234,242,.6);
+      }
+      .controls .panel-title .tier-badge {
+        font-family: ui-monospace, monospace; font-size: .66rem; font-weight: 700;
+        letter-spacing: .04em; text-transform: none; color: #a5e8d0;
+        background: rgba(88, 218, 166, 0.12); border: 1px solid rgba(88, 218, 166, 0.3);
+        border-radius: 999px; padding: .1rem .55rem;
+      }
+      .controls .field {
+        display: grid; grid-template-columns: 3.4rem 1fr 2.6rem;
+        align-items: center; gap: .6rem; padding: .3rem 0;
+      }
+      .controls .field span:first-child { color: rgba(234,234,242,.75); }
+      .controls output {
+        font-family: ui-monospace, monospace; font-size: .7rem; text-align: right;
+        color: #eaeaf2; font-variant-numeric: tabular-nums;
+      }
+      .controls input[type="range"] {
+        width: 100%; height: 3px; appearance: none; border-radius: 999px;
+        background: rgba(255,255,255,.18); accent-color: #8ab8ff; cursor: pointer;
+      }
+      .controls input[type="range"]::-webkit-slider-thumb {
+        appearance: none; width: 13px; height: 13px; border-radius: 50%;
+        background: #eaeaf2; border: 1px solid rgba(0,0,0,.35);
+        box-shadow: 0 1px 4px rgba(0,0,0,.5);
+      }
+      .controls .hint {
+        margin-top: .65rem; padding-top: .6rem; text-align: center;
+        border-top: 1px solid rgba(255,255,255,.08);
+        color: rgba(234,234,242,.45); font-size: .66rem;
+      }
+      .controls .hint code { color: rgba(234,234,242,.65); }
       #tier { font-weight: 700; }
       #react-root { margin-top: 2rem; }
       img.bg { width: 100%; border-radius: 16px; display: block; margin: 2rem 0; }
@@ -67,19 +109,35 @@
 
       <!-- In-flow images scroll underneath the sticky pill below — busy,
            high-frequency content is where displacement reads best. -->
-      <img class="bg" src="https://w.wallhaven.cc/full/zp/wallhaven-zp85do.png" alt="" />
+      <img class="bg" src="https://w.wallhaven.cc/full/yj/wallhaven-yjr3lk.png" alt="" />
       <div class="glass" id="sticky-pill" style="position: sticky; top: 1rem; width: fit-content;">
         Sticky pill — scroll me over the art
       </div>
-      <img class="bg" src="https://w.wallhaven.cc/full/8g/wallhaven-8goj8k.jpg" alt="" />
-      <img class="bg" src="https://w.wallhaven.cc/full/po/wallhaven-poopke.jpg" alt="" />
+      <img class="bg" src="https://w.wallhaven.cc/full/e7/wallhaven-e781gr.jpg" alt="" />
+      <img class="bg" src="https://w.wallhaven.cc/full/6q/wallhaven-6qw6x6.jpg" alt="" />
 
-      <div class="controls">
-        <label>scale <input id="scale" type="range" min="-160" max="0" value="-112" /></label>
-        <label>chroma <input id="chroma" type="range" min="0" max="12" value="6" /></label>
-        <label>mapBlur <input id="mapBlur" type="range" min="2" max="24" value="12" /></label>
-        <button id="reinit">Re-init</button>
-      </div>
+      <aside class="controls" id="controls" aria-label="Effect controls">
+        <div class="panel-title">
+          <span>Liquid glass</span>
+          <span class="tier-badge" id="tier-badge">…</span>
+        </div>
+        <label class="field">
+          <span>scale</span>
+          <input id="scale" type="range" min="-160" max="0" value="-112" />
+          <output id="scale-out">-112</output>
+        </label>
+        <label class="field">
+          <span>chroma</span>
+          <input id="chroma" type="range" min="0" max="12" value="6" />
+          <output id="chroma-out">6</output>
+        </label>
+        <label class="field">
+          <span>map blur</span>
+          <input id="mapBlur" type="range" min="2" max="24" value="12" />
+          <output id="mapBlur-out">12</output>
+        </label>
+        <p class="hint">release a slider to apply · <code>?lg=high|lite|off</code></p>
+      </aside>
     </main>
     <script type="module" src="./main.tsx"></script>
   </body>
