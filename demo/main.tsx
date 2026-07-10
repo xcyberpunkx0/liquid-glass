@@ -56,8 +56,8 @@ for (const id of SLIDERS) {
 init();
 
 createRoot(document.getElementById("react-root")!).render(
-  <LiquidGlass className="glass card" quality={quality} scale={-64}>
-    <strong>React &lt;LiquidGlass&gt;</strong>
+  <LiquidGlass className="glass" quality={quality} scale={-64}>
+    <h3>React &lt;LiquidGlass&gt;</h3>
     <p>
       Same engine through the hook: idle-deferred init, tier via
       useSyncExternalStore, destroy on unmount.

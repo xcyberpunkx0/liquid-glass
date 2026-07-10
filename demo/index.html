@@ -6,39 +6,135 @@
     <title>liquid-glass demo</title>
     <style>
       * { box-sizing: border-box; margin: 0; }
+
       body {
-        min-height: 200vh;
-        font-family: system-ui, sans-serif;
-        color: #eaeaf2;
-        /* Fixed photo: the glass panels slide over it on scroll, which is
-           when the rim refraction is most visible. Gradient underlay shows
-           while the photo loads. */
-        /* Kimi no Na wa comet night — src/images asset (2560px copy of the
-           16K original), injected as --bg-image by main.tsx via Vite import.
-           Fixed, so the glass slides over it on scroll — when the rim
-           refraction pops. */
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        color: #f2f3f7;
+        -webkit-font-smoothing: antialiased;
+        /* User-supplied Fuji/sakura photo, injected as --bg-image by
+           main.tsx via Vite import. Fixed, so the glass slides over it on
+           scroll — when the rim refraction pops. */
         background:
           linear-gradient(rgba(12, 12, 20, 0.32), rgba(12, 12, 20, 0.22)),
           var(--bg-image, none) center / cover no-repeat fixed,
           repeating-linear-gradient(45deg, #101018 0 40px, #181826 40px 80px);
       }
-      main { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }
-      h1 { font-size: 1.6rem; margin-bottom: .25rem; }
-      p.sub { opacity: .75; margin-bottom: 2.5rem; }
-      .row { display: flex; flex-wrap: wrap; align-items: center; gap: 2rem; margin-bottom: 3rem; }
+
+      main { max-width: 1060px; margin: 0 auto; padding: 0 1.5rem; }
+
+      /* ── Hero ─────────────────────────────────────────────────────── */
+      .hero {
+        min-height: 82vh;
+        display: grid;
+        place-content: center;
+        justify-items: center;
+        text-align: center;
+        gap: 1.1rem;
+        padding: 4rem 0 2rem;
+      }
+      .eyebrow {
+        font-family: ui-monospace, monospace;
+        font-size: .72rem;
+        letter-spacing: .08em;
+        color: rgba(242, 243, 247, .75);
+        border: 1px solid rgba(255, 255, 255, .22);
+        background: rgba(13, 16, 24, .35);
+        border-radius: 999px;
+        padding: .35rem .9rem;
+      }
+      .hero h1 {
+        font-size: clamp(2.3rem, 6vw, 3.6rem);
+        font-weight: 750;
+        letter-spacing: -.02em;
+        line-height: 1.05;
+        text-shadow: 0 2px 24px rgba(0, 0, 0, .35);
+      }
+      .hero .lede {
+        max-width: 34rem;
+        font-size: 1.02rem;
+        line-height: 1.55;
+        color: rgba(242, 243, 247, .82);
+        text-shadow: 0 1px 12px rgba(0, 0, 0, .4);
+      }
+      .hero .lede strong { color: #fff; }
+      .hero-actions { display: flex; gap: .8rem; margin-top: .4rem; flex-wrap: wrap; justify-content: center; }
+      .btn {
+        display: inline-flex; align-items: center; gap: .5rem;
+        font-size: .85rem; font-weight: 600; text-decoration: none;
+        color: #f2f3f7; padding: .6rem 1.15rem; border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, .3);
+        background: rgba(13, 16, 24, .38);
+        transition: background .2s, transform .2s;
+      }
+      .btn:hover { background: rgba(13, 16, 24, .6); transform: translateY(-1px); }
+      .scroll-cue { font-size: .75rem; color: rgba(242,243,247,.6); margin-top: 1.6rem; }
+
+      /* ── Sections ─────────────────────────────────────────────────── */
+      .section-title {
+        text-align: center;
+        font-size: .72rem;
+        font-weight: 700;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+        color: rgba(242, 243, 247, .65);
+        margin-bottom: 1.6rem;
+      }
+
+      /* ── Material showcase grid ───────────────────────────────────── */
+      .showcase { padding: 1rem 0 4.5rem; }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.4rem;
+        align-items: stretch;
+      }
+      #react-root { display: contents; }
       .glass {
+        border-radius: 22px;
+        padding: 1.5rem 1.6rem;
+        border: 1px solid rgba(255, 255, 255, .3);
+        background: linear-gradient(rgba(255, 255, 255, .1), rgba(255, 255, 255, .04));
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, .18),
+          0 16px 48px rgba(0, 0, 0, .35);
+      }
+      .glass h3 { font-size: .95rem; margin-bottom: .5rem; }
+      .glass p { font-size: .85rem; line-height: 1.55; color: rgba(242, 243, 247, .85); }
+      .pill-cell { display: grid; place-items: center; }
+      .pill {
         border-radius: 9999px;
-        padding: 1rem 2rem;
-        border: 1px solid rgba(255,255,255,.25);
-        background: linear-gradient(rgba(255,255,255,.08), rgba(255,255,255,.04));
-        box-shadow: 0 12px 40px rgba(0,0,0,.35);
-        font-weight: 600;
+        padding: 1rem 2.1rem;
+        font-weight: 650;
+        font-size: .95rem;
       }
-      .card {
-        border-radius: 24px;
-        padding: 2rem;
-        max-width: 420px;
+
+      /* ── Scroll refraction demo ───────────────────────────────────── */
+      .scroll-demo { padding: 1rem 0 5rem; }
+      .scroll-demo .intro {
+        text-align: center; max-width: 32rem; margin: 0 auto 2.4rem;
+        font-size: .92rem; line-height: 1.6; color: rgba(242, 243, 247, .8);
       }
+      .stack { display: grid; gap: 1.8rem; }
+      .stack img {
+        width: 100%; display: block; border-radius: 20px;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, .45);
+      }
+      .sticky-pill-wrap {
+        position: sticky; top: 44vh; z-index: 2;
+        display: flex; justify-content: center;
+        height: 0; /* overlay the images without adding a grid row gap */
+      }
+
+      /* ── Footer ───────────────────────────────────────────────────── */
+      footer {
+        padding: 2.5rem 1.5rem 3rem;
+        text-align: center;
+        font-size: .78rem;
+        color: rgba(242, 243, 247, .6);
+      }
+      footer a { color: rgba(242, 243, 247, .85); }
+
+      /* ── Controls panel ───────────────────────────────────────────── */
       .controls {
         position: fixed; right: 1.25rem; top: 1.25rem; z-index: 10;
         width: 232px; padding: .9rem 1rem 1rem; border-radius: 16px;
@@ -84,62 +180,100 @@
         color: rgba(234,234,242,.45); font-size: .66rem;
       }
       .controls .hint code { color: rgba(234,234,242,.65); }
-      #tier { font-weight: 700; }
-      #react-root { margin-top: 2rem; }
-      img.bg { width: 100%; border-radius: 16px; display: block; margin: 2rem 0; }
+
+      @media (max-width: 720px) {
+        .controls { position: static; width: auto; margin: 1rem auto 0; max-width: 340px; }
+        .hero { min-height: 70vh; }
+      }
     </style>
   </head>
   <body>
     <main>
-      <h1>@xcyberpunkx0/liquid-glass</h1>
-      <p class="sub">
-        Scroll — the rims refract what passes underneath. Resolved tier:
-        <span id="tier">…</span>. Force one with <code>?lg=high|lite|off</code>.
-      </p>
-
-      <div class="row">
-        <div class="glass" id="pill">Vanilla pill</div>
-        <div class="glass card" id="card">
-          <strong>Vanilla card</strong>
-          <p>backdrop-filter: url(#…) + blur + saturate, applied via the
-          headless element contract and the optional styles.css.</p>
+      <!-- ── Hero ── -->
+      <section class="hero">
+        <span class="eyebrow">@xcyberpunkx0/liquid-glass</span>
+        <h1>Liquid glass, for real.</h1>
+        <p class="lede">
+          Apple-style refraction on the open web — an SVG displacement filter
+          bends whatever passes behind the surface, while the interior stays
+          crisp. Resolved tier: <strong id="tier">…</strong>.
+        </p>
+        <div class="hero-actions">
+          <a class="btn" href="https://github.com/xcyberpunkx0/liquid-glass" target="_blank" rel="noreferrer">
+            ★ GitHub
+          </a>
+          <a class="btn" href="?lg=lite">Try lite tier</a>
         </div>
-      </div>
+        <p class="scroll-cue">scroll to see the rims bend ↓</p>
+      </section>
 
-      <div id="react-root"></div>
-
-      <!-- In-flow images scroll underneath the sticky pill below — busy,
-           high-frequency content is where displacement reads best. -->
-      <img class="bg" src="https://w.wallhaven.cc/full/1k/wallhaven-1kpqw9.jpg" alt="" />
-      <div class="glass" id="sticky-pill" style="position: sticky; top: 1rem; width: fit-content;">
-        Sticky pill — scroll me over the photos
-      </div>
-      <img class="bg" src="https://w.wallhaven.cc/full/0q/wallhaven-0qo2r4.jpg" alt="" />
-      <img class="bg" src="https://w.wallhaven.cc/full/8x/wallhaven-8xv35o.jpg" alt="" />
-
-      <aside class="controls" id="controls" aria-label="Effect controls">
-        <div class="panel-title">
-          <span>Liquid glass</span>
-          <span class="tier-badge" id="tier-badge">…</span>
+      <!-- ── Material showcase ── -->
+      <section class="showcase">
+        <h2 class="section-title">The material</h2>
+        <div class="grid">
+          <div class="pill-cell">
+            <div class="glass pill" id="pill">Vanilla pill</div>
+          </div>
+          <div class="glass" id="card">
+            <h3>Vanilla card</h3>
+            <p>
+              backdrop-filter: url(#…) + blur + saturate, applied through the
+              headless element contract and the optional styles.css.
+            </p>
+          </div>
+          <div id="react-root"></div>
         </div>
-        <label class="field">
-          <span>scale</span>
-          <input id="scale" type="range" min="-160" max="0" value="-112" />
-          <output id="scale-out">-112</output>
-        </label>
-        <label class="field">
-          <span>chroma</span>
-          <input id="chroma" type="range" min="0" max="12" value="6" />
-          <output id="chroma-out">6</output>
-        </label>
-        <label class="field">
-          <span>map blur</span>
-          <input id="mapBlur" type="range" min="2" max="24" value="12" />
-          <output id="mapBlur-out">12</output>
-        </label>
-        <p class="hint">release a slider to apply · <code>?lg=high|lite|off</code></p>
-      </aside>
+      </section>
+
+      <!-- ── Scroll refraction demo ── -->
+      <section class="scroll-demo">
+        <h2 class="section-title">Refraction in motion</h2>
+        <p class="intro">
+          The pill below is sticky. As the photos scroll underneath it, watch
+          the edges of the glass bend the picture while the label stays sharp.
+        </p>
+        <div class="stack">
+          <div class="sticky-pill-wrap">
+            <div class="glass pill" id="sticky-pill">liquid glass</div>
+          </div>
+          <img src="https://w.wallhaven.cc/full/1k/wallhaven-1kpqw9.jpg" alt="Forest shrine with torii gates" />
+          <img src="https://w.wallhaven.cc/full/yq/wallhaven-yqg6r7.jpg" alt="Train passing through cherry-blossom fields" />
+          <img src="https://w.wallhaven.cc/full/wq/wallhaven-wqe5rq.jpg" alt="Autumn maples from a temple veranda" />
+        </div>
+      </section>
     </main>
+
+    <!-- ── Tuning controls ── -->
+    <aside class="controls" id="controls" aria-label="Effect controls">
+      <div class="panel-title">
+        <span>Liquid glass</span>
+        <span class="tier-badge" id="tier-badge">…</span>
+      </div>
+      <label class="field">
+        <span>scale</span>
+        <input id="scale" type="range" min="-160" max="0" value="-112" />
+        <output id="scale-out">-112</output>
+      </label>
+      <label class="field">
+        <span>chroma</span>
+        <input id="chroma" type="range" min="0" max="12" value="6" />
+        <output id="chroma-out">6</output>
+      </label>
+      <label class="field">
+        <span>map blur</span>
+        <input id="mapBlur" type="range" min="2" max="24" value="12" />
+        <output id="mapBlur-out">12</output>
+      </label>
+      <p class="hint">release a slider to apply · <code>?lg=high|lite|off</code></p>
+    </aside>
+
+    <footer>
+      MIT ·
+      <a href="https://github.com/deepika-builds/liquid-glass" target="_blank" rel="noreferrer">
+        fork of deepika-builds/liquid-glass</a>
+      · built by <a href="https://github.com/xcyberpunkx0" target="_blank" rel="noreferrer">xcyberpunkx0</a>
+    </footer>
+
     <script type="module" src="./main.tsx"></script>
   </body>
 </html>
