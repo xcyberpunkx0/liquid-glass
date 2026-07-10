@@ -10,10 +10,15 @@
         min-height: 200vh;
         font-family: system-ui, sans-serif;
         color: #eaeaf2;
+        /* Fixed photo: the glass panels slide over it on scroll, which is
+           when the rim refraction is most visible. Gradient underlay shows
+           while the photo loads. */
+        /* 8K anime wallpaper (wallhaven d83pkl, SFW): fixed, so the glass
+           slides over it on scroll — when the rim refraction pops. */
         background:
-          radial-gradient(1200px 600px at 20% 10%, #3b2f63, transparent),
-          radial-gradient(900px 500px at 80% 30%, #14532d, transparent),
-          radial-gradient(700px 700px at 50% 80%, #7c2d12, transparent),
+          linear-gradient(rgba(12, 12, 20, 0.3), rgba(12, 12, 20, 0.2)),
+          url("https://w.wallhaven.cc/full/d8/wallhaven-d83pkl.jpg") center / cover
+            no-repeat fixed,
           repeating-linear-gradient(45deg, #101018 0 40px, #181826 40px 80px);
       }
       main { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }
@@ -59,6 +64,15 @@
       </div>
 
       <div id="react-root"></div>
+
+      <!-- In-flow images scroll underneath the sticky pill below — busy,
+           high-frequency content is where displacement reads best. -->
+      <img class="bg" src="https://w.wallhaven.cc/full/zp/wallhaven-zp85do.png" alt="" />
+      <div class="glass" id="sticky-pill" style="position: sticky; top: 1rem; width: fit-content;">
+        Sticky pill — scroll me over the art
+      </div>
+      <img class="bg" src="https://w.wallhaven.cc/full/8g/wallhaven-8goj8k.jpg" alt="" />
+      <img class="bg" src="https://w.wallhaven.cc/full/po/wallhaven-poopke.jpg" alt="" />
 
       <div class="controls">
         <label>scale <input id="scale" type="range" min="-160" max="0" value="-112" /></label>

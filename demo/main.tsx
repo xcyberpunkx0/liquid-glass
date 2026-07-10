@@ -27,7 +27,7 @@ function init(): void {
     chroma: Number((document.getElementById("chroma") as HTMLInputElement).value),
     mapBlur: Number((document.getElementById("mapBlur") as HTMLInputElement).value),
   };
-  for (const id of ["pill", "card"]) {
+  for (const id of ["pill", "card", "sticky-pill"]) {
     const el = document.getElementById(id)!;
     const instance = liquidGlass(el, opts);
     if (instance.tier === "off") el.setAttribute("data-lg-quality", "off");
