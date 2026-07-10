@@ -102,11 +102,27 @@
       .glass p { font-size: .85rem; line-height: 1.55; color: rgba(242, 243, 247, .85); }
       .pill-cell { display: grid; place-items: center; }
       .pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
         border-radius: 9999px;
-        padding: 1rem 2.1rem;
+        padding: 1.05rem 2.1rem;
         font-weight: 650;
         font-size: .95rem;
+        white-space: nowrap;
       }
+      .drag-pill {
+        position: fixed;
+        left: 2rem;
+        bottom: 2.5rem;
+        z-index: 20;
+        cursor: grab;
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      .drag-pill:active { cursor: grabbing; }
 
       /* ── Scroll refraction demo ───────────────────────────────────── */
       .scroll-demo { padding: 1rem 0 5rem; }
@@ -243,6 +259,9 @@
       </section>
     </main>
 
+    <!-- ── Draggable inspector pill ── -->
+    <div class="glass pill drag-pill" id="drag-pill">✥ drag me anywhere</div>
+
     <!-- ── Tuning controls ── -->
     <aside class="controls" id="controls" aria-label="Effect controls">
       <div class="panel-title">
@@ -268,10 +287,8 @@
     </aside>
 
     <footer>
-      MIT ·
-      <a href="https://github.com/deepika-builds/liquid-glass" target="_blank" rel="noreferrer">
-        fork of deepika-builds/liquid-glass</a>
-      · built by <a href="https://github.com/xcyberpunkx0" target="_blank" rel="noreferrer">xcyberpunkx0</a>
+      MIT · built by
+      <a href="https://github.com/xcyberpunkx0" target="_blank" rel="noreferrer">xcyberpunkx0</a>
     </footer>
 
     <script type="module" src="./main.tsx"></script>

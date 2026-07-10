@@ -2,12 +2,8 @@
 
 Apple-style **liquid glass refraction** for the web — content behind the
 element visibly bends at the rim with a subtle prism fringe while the
-interior stays legible.
-
-> Fork of [deepika-builds/liquid-glass](https://github.com/deepika-builds/liquid-glass)
-> (MIT, vendored from commit `98ed97b`) — rewritten in TypeScript with a
-> **headless application model**, **adaptive quality tiers**, and a
-> **React adapter**.
+interior stays legible. TypeScript, zero dependencies, with a **headless
+application model**, **adaptive quality tiers**, and a **React adapter**.
 
 ## How it works
 
@@ -135,5 +131,5 @@ preference mid-session tears down or re-initializes automatically.
 
 ## License
 
-MIT — see [LICENSE](./LICENSE). Original technique and implementation by
-[Deepika Rao](https://github.com/deepika-builds/liquid-glass).
+MIT — see [LICENSE](./LICENSE). The displacement-map rendering core derives
+from Deepika Rao's MIT-licensed implementation.

@@ -38,7 +38,7 @@ function init(): void {
     mapBlur: Number(slider("mapBlur").value),
   };
   // The controls panel gets the effect too — dogfooding on a fixed element.
-  for (const id of ["pill", "card", "sticky-pill", "controls"]) {
+  for (const id of ["pill", "card", "sticky-pill", "controls", "drag-pill"]) {
     const el = document.getElementById(id)!;
     const instance = liquidGlass(el, opts);
     if (instance.tier === "off") el.setAttribute("data-lg-quality", "off");
@@ -54,6 +54,37 @@ for (const id of SLIDERS) {
 }
 
 init();
+
+// Draggable inspector pill — transform-only moves, so the displacement map
+// never regenerates; the GPU just re-filters the new backdrop each frame.
+{
+  const pill = document.getElementById("drag-pill")!;
+  let startX = 0, startY = 0, baseX = 0, baseY = 0, x = 0, y = 0;
+  let dragging = false;
+  pill.addEventListener("pointerdown", (e) => {
+    dragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    baseX = x;
+    baseY = y;
+    try {
+      pill.setPointerCapture(e.pointerId);
+    } catch {
+      // Synthetic pointers can't be captured; window listeners still track.
+    }
+  });
+  // Window-level listeners so fast drags that outrun the pill keep tracking
+  // even where pointer capture isn't available.
+  window.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    x = baseX + e.clientX - startX;
+    y = baseY + e.clientY - startY;
+    pill.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+  });
+  const release = () => (dragging = false);
+  window.addEventListener("pointerup", release);
+  window.addEventListener("pointercancel", release);
+}
 
 createRoot(document.getElementById("react-root")!).render(
   <LiquidGlass className="glass" quality={quality} scale={-64}>
