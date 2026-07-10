@@ -7,7 +7,8 @@ import {
 } from "../src/index.js";
 import { LiquidGlass } from "../src/react/index.js";
 import "../src/styles.css";
-import bgUrl from "../src/images/your-name-comet.jpg";
+// Swap the background here — your-name-comet.jpg is the other bundled option.
+import bgUrl from "../src/images/nature-valley.jpg";
 
 document.body.style.setProperty("--bg-image", `url(${bgUrl})`);
 
