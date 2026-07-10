@@ -13,12 +13,13 @@
         /* Fixed photo: the glass panels slide over it on scroll, which is
            when the rim refraction is most visible. Gradient underlay shows
            while the photo loads. */
-        /* Kimi no Na wa twilight sky (wallhaven 8oy372, 4K, SFW): fixed, so
-           the glass slides over it on scroll — when the rim refraction pops. */
+        /* Kimi no Na wa comet night — src/images asset (2560px copy of the
+           16K original), injected as --bg-image by main.tsx via Vite import.
+           Fixed, so the glass slides over it on scroll — when the rim
+           refraction pops. */
         background:
-          linear-gradient(rgba(12, 12, 20, 0.35), rgba(12, 12, 20, 0.25)),
-          url("https://w.wallhaven.cc/full/8o/wallhaven-8oy372.jpg") center / cover
-            no-repeat fixed,
+          linear-gradient(rgba(12, 12, 20, 0.15), rgba(12, 12, 20, 0.1)),
+          var(--bg-image, none) center / cover no-repeat fixed,
           repeating-linear-gradient(45deg, #101018 0 40px, #181826 40px 80px);
       }
       main { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }

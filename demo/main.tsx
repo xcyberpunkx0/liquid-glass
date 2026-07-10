@@ -7,6 +7,9 @@ import {
 } from "../src/index.js";
 import { LiquidGlass } from "../src/react/index.js";
 import "../src/styles.css";
+import bgUrl from "../src/images/your-name-comet.jpg";
+
+document.body.style.setProperty("--bg-image", `url(${bgUrl})`);
 
 // ?lg=high|lite|off forces the tier — DevTools device emulation can't spoof
 // navigator.deviceMemory, so this is how the lite pipeline is inspected and
