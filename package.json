@@ -1,0 +1,70 @@
+{
+  "name": "@xcyberpunkx0/liquid-glass",
+  "version": "0.1.0",
+  "description": "Apple-style liquid glass refraction for the web — headless SVG displacement engine with adaptive quality tiers and a React adapter.",
+  "keywords": [
+    "liquid-glass",
+    "glassmorphism",
+    "backdrop-filter",
+    "svg-filter",
+    "refraction",
+    "react",
+    "ui"
+  ],
+  "license": "MIT",
+  "author": "Aditya Gupta (https://github.com/xcyberpunkx0)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xcyberpunkx0/liquid-glass.git"
+  },
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "demo": "vite demo",
+    "lint:package": "publint && attw --pack . --profile esm-only --exclude-entrypoints ./styles.css",
+    "prepublishOnly": "npm run typecheck && npm run test && npm run build"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.2",
+    "@testing-library/react": "^16.3.0",
+    "@types/node": "^26.1.1",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.2.3",
+    "jsdom": "^26.1.0",
+    "publint": "^0.3.12",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.0",
+    "vitest": "^3.2.4"
+  }
+}

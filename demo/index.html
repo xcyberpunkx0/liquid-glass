@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>liquid-glass demo</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; }
+      body {
+        min-height: 200vh;
+        font-family: system-ui, sans-serif;
+        color: #eaeaf2;
+        background:
+          radial-gradient(1200px 600px at 20% 10%, #3b2f63, transparent),
+          radial-gradient(900px 500px at 80% 30%, #14532d, transparent),
+          radial-gradient(700px 700px at 50% 80%, #7c2d12, transparent),
+          repeating-linear-gradient(45deg, #101018 0 40px, #181826 40px 80px);
+      }
+      main { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }
+      h1 { font-size: 1.6rem; margin-bottom: .25rem; }
+      p.sub { opacity: .75; margin-bottom: 2.5rem; }
+      .row { display: flex; flex-wrap: wrap; align-items: center; gap: 2rem; margin-bottom: 3rem; }
+      .glass {
+        border-radius: 9999px;
+        padding: 1rem 2rem;
+        border: 1px solid rgba(255,255,255,.25);
+        background: linear-gradient(rgba(255,255,255,.08), rgba(255,255,255,.04));
+        box-shadow: 0 12px 40px rgba(0,0,0,.35);
+        font-weight: 600;
+      }
+      .card {
+        border-radius: 24px;
+        padding: 2rem;
+        max-width: 420px;
+      }
+      .controls { position: fixed; right: 1rem; top: 1rem; display: grid; gap: .5rem;
+        background: rgba(0,0,0,.6); padding: 1rem; border-radius: 12px; font-size: .8rem; }
+      .controls label { display: flex; justify-content: space-between; gap: .75rem; }
+      #tier { font-weight: 700; }
+      #react-root { margin-top: 2rem; }
+      img.bg { width: 100%; border-radius: 16px; display: block; margin: 2rem 0; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>@xcyberpunkx0/liquid-glass</h1>
+      <p class="sub">
+        Scroll — the rims refract what passes underneath. Resolved tier:
+        <span id="tier">…</span>. Force one with <code>?lg=high|lite|off</code>.
+      </p>
+
+      <div class="row">
+        <div class="glass" id="pill">Vanilla pill</div>
+        <div class="glass card" id="card">
+          <strong>Vanilla card</strong>
+          <p>backdrop-filter: url(#…) + blur + saturate, applied via the
+          headless element contract and the optional styles.css.</p>
+        </div>
+      </div>
+
+      <div id="react-root"></div>
+
+      <div class="controls">
+        <label>scale <input id="scale" type="range" min="-160" max="0" value="-112" /></label>
+        <label>chroma <input id="chroma" type="range" min="0" max="12" value="6" /></label>
+        <label>mapBlur <input id="mapBlur" type="range" min="2" max="24" value="12" /></label>
+        <button id="reinit">Re-init</button>
+      </div>
+    </main>
+    <script type="module" src="./main.tsx"></script>
+  </body>
+</html>

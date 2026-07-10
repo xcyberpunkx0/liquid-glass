@@ -1,0 +1,40 @@
+/* @xcyberpunkx0/liquid-glass — optional application layer.
+ *
+ * The engine is headless: it only sets --lg-filter-url, data-lg-active and
+ * data-lg-quality on the element. Import this file for a
+ * batteries-included look, or skip it and write your own rules against the
+ * same attributes (recommended when you already have a glass design
+ * system). Tune via:
+ *   --lg-blur           interior backdrop blur while refracting (default 3px)
+ *   --lg-saturate       backdrop saturation boost (default 1.5)
+ *   --lg-fallback-blur  frosted blur where refraction is off (default 16px)
+ */
+
+[data-lg-active] {
+  -webkit-backdrop-filter: var(--lg-filter-url) blur(var(--lg-blur, 3px))
+    saturate(var(--lg-saturate, 1.5));
+  backdrop-filter: var(--lg-filter-url) blur(var(--lg-blur, 3px))
+    saturate(var(--lg-saturate, 1.5));
+}
+
+[data-lg-quality="lite"] {
+  --lg-blur: 2px;
+}
+
+/* Frosted fallback for the off tier (iOS, Firefox, Save-Data, reduced
+ * transparency…). Plain CSS, so it never clobbers your own rules unless
+ * you import this file. */
+[data-lg-quality="off"] {
+  -webkit-backdrop-filter: blur(var(--lg-fallback-blur, 16px))
+    saturate(var(--lg-saturate, 1.5));
+  backdrop-filter: blur(var(--lg-fallback-blur, 16px))
+    saturate(var(--lg-saturate, 1.5));
+}
+
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  [data-lg-active],
+  [data-lg-quality="off"] {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
